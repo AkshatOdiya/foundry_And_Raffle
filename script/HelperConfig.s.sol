@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {Script} from "forge-std/Script.sol";
-import {VRFCoordinatorV2PlusMock} from "@chainlink/contracts/src/v0.8/mocks/VRFCoordinatorV2PlusMock.sol";
+import {VRFCoordinatorV2PlusMock} from "@chainlink/contracts/src/v0.8/vrf/mocks/VRFCoordinatorV2PlusMock.sol";
 /**
  * @dev This mock link token Contract from Patrick uses dependency ERC20 Contract
  * It can be installed using  `forge install transmissions11/solmate`

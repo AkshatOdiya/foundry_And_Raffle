@@ -72,7 +72,10 @@ contract RaffleTest is Test, constants {
     }
 
     // performUpkeep will set the raffle state to calculating so we will use it to do this test
-    function testDontAllowPlayersToEnterWhileRaffleIsCalculating() public raffleEntredAndTimePassed {
+    function testDontAllowPlayersToEnterWhileRaffleIsCalculating()
+        public
+        raffleEntredAndTimePassed
+    {
         raffle.performUpkeep("");
         //Act/Assert
         vm.expectRevert(Raffle.Raffle__RaffleNotOpen.selector);
@@ -85,13 +88,13 @@ contract RaffleTest is Test, constants {
         vm.warp(block.timestamp + config.interval + 1);
         vm.roll(block.number + 1);
         //Act
-        (bool upkeepNeeded,) = raffle.checkUpkeep("");
+        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
         //assert
         assert(upkeepNeeded == false);
     }
 
     function testCheckUpkeepIfRaffleIsOpen() public raffleEntredAndTimePassed {
-        (bool upkeepNeeded,) = raffle.checkUpkeep("");
+        (bool upkeepNeeded, ) = raffle.checkUpkeep("");
         //assert
         assert(upkeepNeeded == true);
     }
@@ -110,7 +113,10 @@ contract RaffleTest is Test, constants {
     }
 
     //getting data from emitted events in our tests
-    function testPerformUpkeepUpdatesRaffleStateAndEmitsRequestId() public raffleEntredAndTimePassed {
+    function testPerformUpkeepUpdatesRaffleStateAndEmitsRequestId()
+        public
+        raffleEntredAndTimePassed
+    {
         // Act
         vm.recordLogs();
         raffle.performUpkeep(""); // emits requestId
@@ -135,27 +141,36 @@ contract RaffleTest is Test, constants {
     // This test will surely fail on fork url as we are using a mock contract,
     // and the real version of the contract is most likely different.
     // Mocks are usually simplified to facilitate ease of testing.
-    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 randomRequestId)
-        public
-        raffleEntredAndTimePassed
-        skipFork
-    {
+    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(
+        uint256 randomRequestId
+    ) public raffleEntredAndTimePassed skipFork {
         // Arrange
         // Act / Assert
         vm.expectRevert("nonexistent request");
-        VRFCoordinatorV2PlusMock(config.vrfCoordinator).fulfillRandomWords(randomRequestId, address(raffle));
+        VRFCoordinatorV2PlusMock(config.vrfCoordinator).fulfillRandomWords(
+            randomRequestId,
+            address(raffle)
+        );
     }
 
     //This test will fail on fork url(sepolia rpc url) as VRFCoordinatorV2PlusMock is included
     //so we can create a modifier to skip for this
-    function testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney() public skipFork raffleEntredAndTimePassed {
+    function testFulfillRandomWordsPicksAWinnerResetsAndSendsMoney()
+        public
+        skipFork
+        raffleEntredAndTimePassed
+    {
         // Arrange
 
         uint256 additionalEntrants = 3;
         uint256 startingIndex = 1;
         address expectedWinner = address(1);
 
-        for (uint256 i = startingIndex; i < startingIndex + additionalEntrants; i++) {
+        for (
+            uint256 i = startingIndex;
+            i < startingIndex + additionalEntrants;
+            i++
+        ) {
             address player = address(uint160(i));
             hoax(player, STARTING_BALANCE);
             raffle.enterRaffle{value: config.entranceFee}();
@@ -169,7 +184,10 @@ contract RaffleTest is Test, constants {
         Vm.Log[] memory entries = vm.getRecordedLogs();
         bytes32 requestId = entries[1].topics[1];
         // Pretend to be Chainlink VRF
-        VRFCoordinatorV2PlusMock(config.vrfCoordinator).fulfillRandomWords(uint256(requestId), address(raffle));
+        VRFCoordinatorV2PlusMock(config.vrfCoordinator).fulfillRandomWords(
+            uint256(requestId),
+            address(raffle)
+        );
 
         // Assert
         address recentWinner = raffle.getRecentWinner();
