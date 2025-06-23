@@ -43,8 +43,7 @@ contract HelperConfig is Script, constants {
         uint256 deployerKey;
     }
 
-    uint256 public constant DEFAULT_ANVIL_KEY =
-        0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
+    uint256 public constant DEFAULT_ANVIL_KEY = 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80;
 
     NetworkConfig public localNetworkConfig;
     mapping(uint256 chainId => NetworkConfig) public networkConfig;
@@ -53,9 +52,7 @@ contract HelperConfig is Script, constants {
         networkConfig[ETH_SEPOLIA_CHAIN_ID] = getSepoliaEthConfig();
     }
 
-    function getConfigByChainId(
-        uint256 chainId
-    ) public returns (NetworkConfig memory) {
+    function getConfigByChainId(uint256 chainId) public returns (NetworkConfig memory) {
         // ChainIB of ETH sepolia is 1115511, you can see on Chainlist by typing ethereum sepolia
         // Verifying that a VRF coordinator exists
         if (networkConfig[chainId].vrfCoordinator != address(0)) {
@@ -93,10 +90,7 @@ contract HelperConfig is Script, constants {
             return localNetworkConfig;
         }
         vm.startBroadcast();
-        VRFCoordinatorV2PlusMock vrfCoordinatorMock = new VRFCoordinatorV2PlusMock(
-                MOCK_BASE_FEE,
-                MOCK_GAS_PRICE_LINK
-            );
+        VRFCoordinatorV2PlusMock vrfCoordinatorMock = new VRFCoordinatorV2PlusMock(MOCK_BASE_FEE, MOCK_GAS_PRICE_LINK);
         LinkToken linkToken = new LinkToken();
 
         vm.stopBroadcast();
