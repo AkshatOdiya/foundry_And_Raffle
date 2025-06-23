@@ -2,15 +2,12 @@
 // A mock for testing code that relies on VRFCoordinatorV2Plus.
 pragma solidity 0.8.23;
 
-/*
-
 import {VRFCoordinatorV2Interface} from "../interfaces/VRFCoordinatorV2Interface.sol";
 import {VRFConsumerBaseV2Plus} from "../dev/VRFConsumerBaseV2Plus.sol";
 import {ConfirmedOwner} from "../../shared/access/ConfirmedOwner.sol";
 import {IVRFCoordinatorV2Plus} from "../dev/interfaces/IVRFCoordinatorV2Plus.sol";
 import {VRFV2PlusClient} from "../dev/libraries/VRFV2PlusClient.sol";
 
-*/
 // solhint-disable chainlink-solidity/prefix-immutable-variables-with-i
 // solhint-disable gas-custom-errors
 // solhint-disable avoid-low-level-calls
