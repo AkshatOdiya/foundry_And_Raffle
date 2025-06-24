@@ -79,18 +79,20 @@ contract HelperConfig is Script, constants {
             subscriptionId: 0, //put your subscriptionId, that you got from chainlink while create subscrip tion
             callbackGasLimit: 500000,
             link: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
-            deployerKey: 0x794 // put you sepolia private key here
+            deployerKey: 0x26b154b496defef0dc972b57766d4f1c8b94fddf84ccd80d00bc74de8c362794 // put you sepolia private key here
         });
 
         return sepoliaConfig;
     }
+
+    VRFCoordinatorV2PlusMock public vrfCoordinatorMock;
 
     function getOrCreateAnvilEthConfig() public returns (NetworkConfig memory) {
         if (localNetworkConfig.vrfCoordinator != address(0)) {
             return localNetworkConfig;
         }
         vm.startBroadcast();
-        VRFCoordinatorV2PlusMock vrfCoordinatorMock = new VRFCoordinatorV2PlusMock(MOCK_BASE_FEE, MOCK_GAS_PRICE_LINK);
+        vrfCoordinatorMock = new VRFCoordinatorV2PlusMock(MOCK_BASE_FEE, MOCK_GAS_PRICE_LINK);
         LinkToken linkToken = new LinkToken();
 
         vm.stopBroadcast();
@@ -107,5 +109,9 @@ contract HelperConfig is Script, constants {
             deployerKey: DEFAULT_ANVIL_KEY // Any default anvil private key
         });
         return localNetworkConfig;
+    }
+
+    function getvrfCoordinatorMockAddress() public returns (address) {
+        return getConfig().vrfCoordinator;
     }
 }

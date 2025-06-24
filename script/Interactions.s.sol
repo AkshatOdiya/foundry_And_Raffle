@@ -47,6 +47,7 @@ contract CreateSubscription is Script {
 
 contract FundSubscription is Script, constants {
     uint256 public constant FUND_AMOUNT = 3 ether; //3 Link
+    address linkToken;
 
     // In order to fund the subscription, we need
     // 1. VrfCoordintor address
@@ -57,15 +58,18 @@ contract FundSubscription is Script, constants {
         HelperConfig helperConfig = new HelperConfig();
         address vrfCoordinator = helperConfig.getConfig().vrfCoordinator;
         uint256 subscriptionId = helperConfig.getConfig().subscriptionId;
-        address linkToken = helperConfig.getConfig().link;
+        linkToken = helperConfig.getConfig().link;
         uint256 deployerKey = helperConfig.getConfig().deployerKey;
 
         fundSubscription(vrfCoordinator, subscriptionId, linkToken, deployerKey);
     }
 
-    function fundSubscription(address vrfCoordinator, uint256 subscriptionId, address linkToken, uint256 deployerKey)
-        public
-    {
+    function fundSubscription(
+        address vrfCoordinator,
+        uint256 subscriptionId,
+        address, /*linkToken */
+        uint256 deployerKey
+    ) public {
         console2.log("Funding Subscription: ", subscriptionId);
         console2.log("Using VrfCoordinator: ", vrfCoordinator);
         console2.log("On ChainId: ", block.chainid);
